@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Years of Memories - SMP Negeri 1 Pelemahan</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;600&display=swap');
+
+        /* CSS Dasar bergaya elegan, nuansa dinding logam/gelap */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a;
+            color: #f4f4f4;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Halaman Pembuka */
+        #intro-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background: linear-gradient(135deg, #121212 0%, #2a2a2a 100%);
+            transition: opacity 1s ease-out;
+        }
+
+        #intro-page h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        #intro-page h2 {
+            font-weight: 300;
+            color: #aaaaaa;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .play-btn {
+            background-color: #f4f4f4;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255,255,255,0.5);
+            background-color: #ffffff;
+        }
+
+        /* Halaman Konten (Kelas 7, 8, 9) */
+        .page {
+            display: none; /* Disembunyikan di awal */
+            min-height: 100vh;
+            padding: 50px 20px;
+            box-sizing: border-box;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #444;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .page-text {
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #cccccc;
+            font-style: italic;
+        }
+
+        /* Galeri bergaya Polaroid */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .polaroid {
+            background: #fff;
+            padding: 15px 15px 40px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: grayscale(20%);
+        }
+
+        .polaroid img {
+            width: 250px;
+            height: 300px;
+            object-fit: cover;
+            /* Efek blur tipis ala kamera lama */
+            filter: blur(0.5px);
+            transition: filter 0.3s;
+        }
+
+        /* Efek saat difoto (Flash & Blur hilang) */
+        .polaroid:hover {
+            transform: scale(1.05) rotate(2deg);
+            filter: grayscale(0%);
+        }
+        
+        .polaroid:hover img {
+            filter: blur(0) brightness(1.2);
+        }
+
+        .btn-next {
+            background: transparent;
+            color: #f4f4f4;
+            border: 2px solid #f4f4f4;
+            padding: 10px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-next:hover {
+            background: #f4f4f4;
+            color: #1a1a1a;
+        }
+
+        /* Modal / Lightbox (Saat foto diklik) */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: fadeIn 0.3s;
+        }
+
+        #modal img {
+            max-width: 80%;
+            max-height: 70vh;
+            border: 10px solid #fff;
+            box-shadow: 0 0 50px rgba(255,255,255,0.2);
+        }
+
+        #modal-text {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            max-width: 600px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="kita-ke-sana.mp3" loop></audio>
+
+    <div id="intro-page">
+        <h1>Three Years of Memories</h1>
+        <h2>SMP Negeri 1 Pelemahan</h2>
+        <button class="play-btn" onclick="startJourney()">Play</button>
+    </div>
+
+    <div id="page-7" class="page">
+        <h2 class="page-title">Bab 1: Kelas 7</h2>
+        <p class="page-text">Masa-masa awal yang masih serba canggung. Baju seragam yang masih kebesaran, senyum yang masih malu-malu, dan langkah pertama kita memulai segalanya di sini. Walau masih asing, hari-hari ini adalah pondasi cerita kita.</p>
+        
+        <div class="gallery">
+            <div class="polaroid" onclick="openModal(this, 'Pertama kali kumpul, masih pada jaim semua nih!')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-b234283c-4d2f-4bf2-b223-5d95cfe201eb.jpg" alt="Memori Kelas 7">
+            </div>
+            <div class="polaroid" onclick="openModal(this, 'Senyum tipis ala anak baru.')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-e926f624-a944-4229-8c0e-701e68b3aee1.jpg" alt="Memori Kelas 7">
+            </div>
+        </div>
+        
+        <button class="btn-next" onclick="nextPage('page-7', 'page-8')">Lanjut ke Kelas 8 &#8594;</button>
+    </div>
+
+    <div id="page-8" class="page">
+        <h2 class="page-title">Bab 2: Kelas 8</h2>
+        <p class="page-text">Dari yang awalnya tak saling sapa, perlahan kita mulai menemukan ritme bersama. Kecanggungan berubah menjadi canda tawa lepas. Di titik inilah perjalanan kita menjadi lebih mulia, menyatukan berbagai perbedaan menjadi ikatan pertemanan yang hangat.</p>
+        
+        <div class="gallery">
+            <div class="polaroid" onclick="openModal(this, 'Mulai berani berekspresi, nggak ada lagi kata canggung!')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-b4e648b1-f28e-4eaa-a80f-8c1df7b91ab4.jpg" alt="Memori Kelas 8">
+            </div>
+            <div class="polaroid" onclick="openModal(this, 'Momen random yang ternyata jadi kenangan paling berharga.')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-a58cba12-a209-4073-9aba-d62ff95b706d.jpg" alt="Memori Kelas 8">
+            </div>
+        </div>
+
+        <button class="btn-next" onclick="nextPage('page-8', 'page-9')">Lanjut ke Kelas 9 &#8594;</button>
+    </div>
+
+    <div id="page-9" class="page">
+        <h2 class="page-title">Bab 3: Kelas 9</h2>
+        <p class="page-text">Tahun terakhir di mana kita benar-benar solid dan kompak. Semua ego sudah luntur, digantikan dengan rasa saling dukung menghadapi ujian dan perpisahan di depan mata. Memori di kelas ini adalah mahakarya penutup yang tak akan pernah tergantikan oleh waktu.</p>
+        
+        <div class="gallery">
+            <div class="polaroid" onclick="openModal(this, 'Solidaritas tanpa batas. Kita satu keluarga!')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-0da240b0-b34e-49fd-9d52-47ece1070ac8.jpg" alt="Memori Kelas 9">
+            </div>
+            <div class="polaroid" onclick="openModal(this, 'Persiapan ujian dan tawa di sela-sela kepanikan.')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-af6fd1f7-cdc3-4753-9536-002a24e8b459.jpg" alt="Memori Kelas 9">
+            </div>
+            <div class="polaroid" onclick="openModal(this, 'Tirai putih, senyum lebar, dan janji untuk sukses bareng-bareng.')">
+                <img src="https://cdn.phototourl.com/member/2026-09-07-140d0c28-f383-4bd1-8004-27c7bdf4412e.jpg" alt="Memori Kelas 9">
+            </div>
+        </div>
+        
+        <button class="btn-next" onclick="alert('Terima kasih untuk 3 tahun yang luar biasa!')">Selesai</button>
+    </div>
+
+    <div id="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modal-img" src="" alt="Zoom Foto">
+        <div id="modal-text"></div>
+    </div>
+
+    <script>
+        // Fungsi Tombol Play
+        function startJourney() {
+            let audio = document.getElementById("bg-music");
+            audio.play().catch(error => console.log("Browser membutuhkan interaksi ekstra untuk memutar audio."));
+            
+            document.getElementById("intro-page").style.display = "none";
+            document.getElementById("page-7").style.display = "block";
+        }
+
+        // Fungsi Tombol Next
+        function nextPage(currentId, nextId) {
+            document.getElementById(currentId).style.display = "none";
+            document.getElementById(nextId).style.display = "block";
+            window.scrollTo(0, 0);
+        }
+
+        // Fungsi Lightbox Modal Foto
+        function openModal(element, text) {
+            let modal = document.getElementById("modal");
+            let modalImg = document.getElementById("modal-img");
+            let modalText = document.getElementById("modal-text");
+
+            modalImg.src = element.querySelector('img').src;
+            modalText.innerHTML = text;
+            modal.style.display = "flex";
+        }
+
+        // Fungsi Tutup Modal
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
